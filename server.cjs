@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const ensureLoggedIn = require('./config/ensureLoggedIn.cjs')
 
 //connect to database
 const mongoose = require('mongoose');
@@ -43,6 +44,9 @@ const userRouter = require("./routes/api/users.cjs")
 // Put API routes here, before the "catch all" route
 app.use('/api/users', userRouter);
 
+app.use('/api/orders', ensureLoggedIn, require('./routes/api/orders.cjs'))
+
+app.use('/api/items', ensureLoggedIn, require('./routes/api/item.cjs'))
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX requests
 // Send the built and compiled React code to the browser
